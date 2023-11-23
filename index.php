@@ -1,6 +1,6 @@
 <?php
  $error = $_GET['error'] ?? '';
-
+ 
 ?>
 
 <!DOCTYPE html>
@@ -21,6 +21,12 @@
             </div>
             <button>Comenzar Juego</button>
         </form>
+            <?php
+                if($error === '0'){
+                    echo '
+                    <p class="error">Rellena el campo con un número par</p>';
+                }
+            ?>
     </div>
 </body>
 </html>

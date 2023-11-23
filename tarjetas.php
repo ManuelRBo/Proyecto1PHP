@@ -1,31 +1,66 @@
 <?php
-    session_start();
-    var_dump(intval($_POST['numeroTarjetas']));
-    if($_POST['numeroTarjetas'] !== "" && intval($_POST['numeroTarjetas'])%2 === 0){
+include 'funciones.php';
+session_start();
+if (isset($_POST['numeroTarjetas'])) {
+    if ($_POST['numeroTarjetas'] !== "" && intval($_POST['numeroTarjetas']) % 2 === 0) {
         $_SESSION['numeroTarjetas'] = $_POST['numeroTarjetas'];
-    }else{
-        header('Location: index.php?error=1');
+    } else {
+        session_destroy();
+        header('Location: index.php?error=0');
+    }
+}
+
+if(!isset($_SESSION['arrayTarjetas'])){
+    $arrayAnimales = crearArrayAnimales();
+    $arrayTarjetas = crearArrayTarjetas($arrayAnimales, $_SESSION['numeroTarjetas']);
+    $_SESSION['arrayTarjetas'] = $arrayTarjetas;
+}
+
+if(!isset($_SESSION['tarjeta1'])){
+    $_SESSION['tarjeta1'] = "";
+}
+if(!isset($_SESSION['tarjeta2'])){
+    $_SESSION['tarjeta2'] = "";
+}
+
+
+
+if (isset($_POST['pulsarTarjeta'])) {
+    if($_SESSION['tarjeta1'] === ""){
+        $_SESSION['arrayTarjetas'][$_POST['pulsarTarjeta']][1] = "pulsada";
+        $_SESSION['tarjeta1'] = $_SESSION['arrayTarjetas'][$_POST['pulsarTarjeta']][0];
+    }elseif($_SESSION['tarjeta2'] === ""){
+        $_SESSION['arrayTarjetas'][$_POST['pulsarTarjeta']][1] = "pulsada";
+        $_SESSION['tarjeta2'] = $_SESSION['arrayTarjetas'][$_POST['pulsarTarjeta']][0];
     }
 
+
+}
+
+echo "<pre>";
+var_dump($_SESSION['tarjeta1']);
+var_dump($_SESSION['tarjeta2']);
+echo "</pre>";
 
 ?>
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/pagina2.css">
     <title>Memory</title>
+
 </head>
 
 <body>
     <div class="contenedor">
         <div class="header">
             <h1>Memory</h1>
-            <p>Tarjetas elegidas: 60</p>
+            <p>Tarjetas elegidas: <?php echo $_SESSION['numeroTarjetas'] ?></p>
         </div>
         <form class="formulario-header" action="">
             <div class="entrada">
@@ -33,15 +68,22 @@
                 <button type="submit" name="header" value="numeroDibujos">Cambiar Numero Dibujos</button>
             </div>
         </form>
-            <div class="contenedor-tarjetas">
-                <div class="contenedorTarj">
-                    <?php
-                    for ($i = 0; $i < 60; $i++) {
-                        echo '<div class="tarjeta"></div>';
-                    }
-                    ?>
-                </div>
+        <div class="contenedor-tarjetas">
+            <div class="contenedorTarj">
+                <?php for ($i = 0; $i < $_SESSION['numeroTarjetas']; $i++) : ?>
+                    <div class='tarjeta'>
+                        <form action="tarjetas.php" method="post">
+                            <?php if ($_SESSION['arrayTarjetas'][$i][1] === "pulsada") {
+                                echo tarjetaPulsada($_SESSION['arrayTarjetas'], $i);
+                            } else if ($_SESSION['arrayTarjetas'][$i][1] === "noPulsada") {
+                                echo tarjetaNoPulsada($i);
+                            }
+                            ?>
+                        </form>
+                    </div>
+                <?php endfor; ?>
             </div>
+        </div>
     </div>
 </body>
 

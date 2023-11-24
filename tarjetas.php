@@ -10,50 +10,56 @@ if (isset($_POST['numeroTarjetas'])) {
     }
 }
 
-if(!isset($_SESSION['arrayTarjetas'])){
+if (isset($_POST['header'])|| isset($_GET['reinicar'])) {
+    if ($_POST['header'] === "nuevaPartida" || $_GET['reinicar']=== '1') {
+        foreach ($_SESSION['arrayTarjetas'] as $key => $value) {
+            $_SESSION['arrayTarjetas'][$key][1] = "noPulsada";
+        }
+        $_SESSION['tarjeta1'] = "";
+        $_SESSION['tarjeta2'] = "";
+        shuffle($_SESSION['arrayTarjetas']);
+        $_SESSION['numeroJugadas'] = 0;
+    } else if ($_POST['header'] === "numeroDibujos") {
+        header('Location: configurar.php');
+    }
+}
+
+if (!isset($_SESSION['arrayTarjetas'])) {
     $arrayAnimales = crearArrayAnimales();
     $arrayTarjetas = crearArrayTarjetas($arrayAnimales, $_SESSION['numeroTarjetas']);
     $_SESSION['arrayTarjetas'] = $arrayTarjetas;
-    $_SESSION['tarjeta1'] = [];
-    $_SESSION['tarjeta2'] = [];
+    $_SESSION['tarjeta1'] = "";
+    $_SESSION['tarjeta2'] = "";
+    $_SESSION['numeroJugadas'] = 0;
 }
 
 
 if (isset($_POST['pulsarTarjeta'])) {
+    $_SESSION['numeroJugadas'] += 1;
     if ($_SESSION['tarjeta1'] === "") {
         $_SESSION['arrayTarjetas'][$_POST['pulsarTarjeta']][1] = "pulsada";
-        array_push($_SESSION['tarjeta1'],$_SESSION['arrayTarjetas'][$_POST['pulsarTarjeta']][0]);
-        array_push($_SESSION['tarjeta1'][1],$_POST['pulsarTarjeta']);
+        $_SESSION['tarjeta1'] = $_POST['pulsarTarjeta'];
     } elseif ($_SESSION['tarjeta2'] === "") {
         $_SESSION['arrayTarjetas'][$_POST['pulsarTarjeta']][1] = "pulsada";
-        array_push($_SESSION['tarjeta2'],$_SESSION['arrayTarjetas'][$_POST['pulsarTarjeta']][0]);
-        array_push($_SESSION['tarjeta2'][1],$_POST['pulsarTarjeta']);
-    
-
+        $_SESSION['tarjeta2'] = $_POST['pulsarTarjeta'];
+    } else {
         if (comprobarTarjetas($_SESSION['arrayTarjetas'], $_SESSION['tarjeta1'], $_SESSION['tarjeta2'])) {
-            $_SESSION['tarjeta1'] = "";
+            $_SESSION['arrayTarjetas'][$_POST['pulsarTarjeta']][1] = "pulsada";
+            $_SESSION['tarjeta1'] = $_POST['pulsarTarjeta'];
             $_SESSION['tarjeta2'] = "";
-            $_SESSION['tarjeta3'] = "";
         } else {
-            $indice1 = $_SESSION['tarjeta1'][1];
-            $indice2 = $_SESSION['tarjeta2'][1];
-            
-            $_SESSION['arrayTarjetas'][$indice1][1] = "noPulsada";
-            $_SESSION['arrayTarjetas'][$indice2][1] = "noPulsada";
-            $_SESSION['tarjeta1'] = "";
+            $_SESSION['arrayTarjetas'][$_SESSION['tarjeta1']][1] = "noPulsada";
+            $_SESSION['arrayTarjetas'][$_SESSION['tarjeta2']][1] = "noPulsada";
+            $_SESSION['arrayTarjetas'][$_POST['pulsarTarjeta']][1] = "pulsada";
+            $_SESSION['tarjeta1'] = $_POST['pulsarTarjeta'];
             $_SESSION['tarjeta2'] = "";
         }
     }
 }
 
-
-
-
-// echo "<pre>";
-// var_dump($_SESSION['tarjeta1']);
-// var_dump($_SESSION['tarjeta2']);
-// var_dump($_SESSION['arrayTarjetas']);
-// echo "</pre>";
+echo "<pre>";
+var_dump($_SESSION);
+echo "</pre>";
 ?>
 
 
@@ -73,8 +79,9 @@ if (isset($_POST['pulsarTarjeta'])) {
         <div class="header">
             <h1>Memory</h1>
             <p>Tarjetas elegidas: <?php echo $_SESSION['numeroTarjetas'] ?></p>
+            <p>Jugadas Realizadas: <?php echo (isset($_SESSION['numeroJugadas'])) ? $_SESSION['numeroJugadas'] : '0';?></p> 
         </div>
-        <form class="formulario-header" action="">
+        <form class="formulario-header" action="tarjetas.php" method="post">
             <div class="entrada">
                 <button type="submit" name="header" value="nuevaPartida">Nueva Partida</button>
                 <button type="submit" name="header" value="numeroDibujos">Cambiar Numero Dibujos</button>

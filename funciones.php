@@ -9,6 +9,7 @@ function crearArrayAnimales(){
 }
 
 function crearArrayTarjetas($arrayAnimales, $numeroTarjetas){
+    shuffle($arrayAnimales);
     $arrayTarjetas = [];
     for($i = 0; $i < $numeroTarjetas/2; $i++){
         $arrayTarjetas[] = [$arrayAnimales[$i], "noPulsada"];
@@ -20,7 +21,7 @@ function crearArrayTarjetas($arrayAnimales, $numeroTarjetas){
 }
 
 function tarjetaPulsada($arrayTarjetas, $i){
-    return "<button class='botonesTarjetas' style='background-color: white;' name='pulsarTarjeta' value='" . $i . "'>
+    return "<button class='botonesTarjetas' style='background-color: white; scale: 1.2;' name='pulsarTarjeta' value='" . $i . "'>
                 " . $arrayTarjetas[$i][0] . "
             </button>";
 }
@@ -32,17 +33,9 @@ function tarjetaNoPulsada($i){
 }
 
 function comprobarTarjetas($arrayTarjetas, $tarjeta1, $tarjeta2){
-    if($tarjeta1 === $tarjeta2){
+    if($arrayTarjetas[$tarjeta1][0] === $arrayTarjetas[$tarjeta2][0]){
         return true;
     }else{
         return false;
-    }
-}
-
-function encontrarTarjeta($arrayTarjetas, $tarjeta){
-    foreach ($arrayTarjetas as $indice => $datosTarjeta) {
-        if ($datosTarjeta[0] === $tarjeta && $datosTarjeta[1] === "pulsada") {
-            return $indice;
-        }
     }
 }

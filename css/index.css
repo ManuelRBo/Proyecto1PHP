@@ -62,6 +62,13 @@ form{
         font-size: 16px;
         z-index: 2;
         background-color: transparent;
+
+        &:focus + label,
+        &:valid + label{   
+            top: -15px;
+            left: 0;
+            font-size: 13px;
+        }
     }
 }
 

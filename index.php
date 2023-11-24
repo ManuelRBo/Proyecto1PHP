@@ -1,4 +1,6 @@
 <?php
+    session_start();
+    session_destroy();
  $error = $_GET['error'] ?? '';
  
 ?>
@@ -8,7 +10,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/pagina1.css">
+    <link rel="stylesheet" href="css/index.css">
     <title>Memory</title>
 </head>
 <body>

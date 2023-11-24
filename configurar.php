@@ -5,6 +5,11 @@ $error = "";
 if(isset($_POST['configurar'])){
     if($_POST['configurar'] === "actualizar"){
         if($_POST['numeroTarjetas'] !== "" && intval($_POST['numeroTarjetas']) % 2 === 0){
+            $_SESSION['numeroTarjetas'] = $_POST['numeroTarjetas'];
+            $_SESSION['tarjeta1'] = "";
+            $_SESSION['tarjeta2'] = "";
+            $_SESSION['numeroJugadas'] = 0;
+            $_SESSION['arrayTarjetas'] = crearArrayTarjetas($_POST['numeroTarjetas']);
             header('Location: tarjetas.php');
         }else{
             $error = '0';
@@ -21,7 +26,7 @@ if(isset($_POST['configurar'])){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/pagina3.css">
+    <link rel="stylesheet" href="css/configurar.css">
     <title>Memory</title>
 </head>
 <body>

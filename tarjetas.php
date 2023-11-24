@@ -10,8 +10,9 @@ if (isset($_POST['numeroTarjetas'])) {
     }
 }
 
-if (isset($_POST['header'])|| isset($_GET['reinicar'])) {
-    if ($_POST['header'] === "nuevaPartida" || $_GET['reinicar']=== '1') {
+if (isset($_POST['header'])) {
+    if ($_POST['header'] === "nuevaPartida") {
+        $_SESSION['arrayTarjetas'] = crearArrayTarjetas($_SESSION['numeroTarjetas']);
         foreach ($_SESSION['arrayTarjetas'] as $key => $value) {
             $_SESSION['arrayTarjetas'][$key][1] = "noPulsada";
         }
@@ -22,11 +23,20 @@ if (isset($_POST['header'])|| isset($_GET['reinicar'])) {
     } else if ($_POST['header'] === "numeroDibujos") {
         header('Location: configurar.php');
     }
+}elseif(isset($_GET['reinicar'])){
+    $_SESSION['arrayTarjetas'] = crearArrayTarjetas($_SESSION['numeroTarjetas']);
+    foreach ($_SESSION['arrayTarjetas'] as $key => $value) {
+        $_SESSION['arrayTarjetas'][$key][1] = "noPulsada";
+    }
+    $_SESSION['tarjeta1'] = "";
+    $_SESSION['tarjeta2'] = "";
+    shuffle($_SESSION['arrayTarjetas']);
+    $_SESSION['numeroJugadas'] = 0;
 }
 
 if (!isset($_SESSION['arrayTarjetas'])) {
     $arrayAnimales = crearArrayAnimales();
-    $arrayTarjetas = crearArrayTarjetas($arrayAnimales, $_SESSION['numeroTarjetas']);
+    $arrayTarjetas = crearArrayTarjetas($_SESSION['numeroTarjetas']);
     $_SESSION['arrayTarjetas'] = $arrayTarjetas;
     $_SESSION['tarjeta1'] = "";
     $_SESSION['tarjeta2'] = "";
@@ -35,13 +45,16 @@ if (!isset($_SESSION['arrayTarjetas'])) {
 
 
 if (isset($_POST['pulsarTarjeta'])) {
-    $_SESSION['numeroJugadas'] += 1;
     if ($_SESSION['tarjeta1'] === "") {
         $_SESSION['arrayTarjetas'][$_POST['pulsarTarjeta']][1] = "pulsada";
         $_SESSION['tarjeta1'] = $_POST['pulsarTarjeta'];
     } elseif ($_SESSION['tarjeta2'] === "") {
+        $_SESSION['numeroJugadas'] += 1;
         $_SESSION['arrayTarjetas'][$_POST['pulsarTarjeta']][1] = "pulsada";
         $_SESSION['tarjeta2'] = $_POST['pulsarTarjeta'];
+        if(ganar($_SESSION['arrayTarjetas'])){
+            header('Location: ganar.php');
+        }
     } else {
         if (comprobarTarjetas($_SESSION['arrayTarjetas'], $_SESSION['tarjeta1'], $_SESSION['tarjeta2'])) {
             $_SESSION['arrayTarjetas'][$_POST['pulsarTarjeta']][1] = "pulsada";
@@ -57,9 +70,9 @@ if (isset($_POST['pulsarTarjeta'])) {
     }
 }
 
-echo "<pre>";
-var_dump($_SESSION);
-echo "</pre>";
+// echo "<pre>";
+// var_dump($_SESSION);
+// echo "</pre>";
 ?>
 
 
@@ -69,7 +82,7 @@ echo "</pre>";
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/pagina2.css">
+    <link rel="stylesheet" href="css/tarjetas.css">
     <title>Memory</title>
 
 </head>

@@ -8,7 +8,8 @@ function crearArrayAnimales(){
     return $arrayAnimales;
 }
 
-function crearArrayTarjetas($arrayAnimales, $numeroTarjetas){
+function crearArrayTarjetas($numeroTarjetas){
+    $arrayAnimales = crearArrayAnimales();
     shuffle($arrayAnimales);
     $arrayTarjetas = [];
     for($i = 0; $i < $numeroTarjetas/2; $i++){
@@ -38,4 +39,14 @@ function comprobarTarjetas($arrayTarjetas, $tarjeta1, $tarjeta2){
     }else{
         return false;
     }
+}
+
+
+function ganar($arrayTarjetas){
+    foreach($arrayTarjetas as $key => $value){
+        if($arrayTarjetas[$key][1] === "noPulsada"){
+            return false;
+        }
+    }
+    return true;
 }

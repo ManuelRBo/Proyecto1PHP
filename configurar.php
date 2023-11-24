@@ -4,7 +4,7 @@
  * @author Manuel Rodrigo Borriño
  */
 
-//Recuperaremos la sesion, incluiremos als funciones e iniciaremos la variable errores
+//Recuperaremos la sesion, incluiremos las funciones e iniciaremos la variable errores
 include 'funciones.php';
 session_start();
 $error = "";

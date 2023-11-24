@@ -36,7 +36,7 @@
             //En el caso de que el error sea 0 nos muestra un mensaje de error
                 if($error === '0'){
                     echo '
-                    <p class="error">Rellena el campo con un número par</p>';
+                    <p class="error">Rellena el campo con un número par entre 2 y 61</p>';
                 }
             ?>
     </div>

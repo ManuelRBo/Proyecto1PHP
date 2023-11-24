@@ -57,7 +57,7 @@ if(isset($_POST['configurar'])){
             <?php
                 if($error === '0'){
                     echo '
-                    <p class="error">Rellena el campo con un número par</p>';
+                    <p class="error">Rellena el campo con un número par entre 2 y 61</p>';
                 }
             ?>
     </div>

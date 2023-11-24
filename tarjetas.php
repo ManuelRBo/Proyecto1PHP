@@ -14,34 +14,46 @@ if(!isset($_SESSION['arrayTarjetas'])){
     $arrayAnimales = crearArrayAnimales();
     $arrayTarjetas = crearArrayTarjetas($arrayAnimales, $_SESSION['numeroTarjetas']);
     $_SESSION['arrayTarjetas'] = $arrayTarjetas;
+    $_SESSION['tarjeta1'] = [];
+    $_SESSION['tarjeta2'] = [];
 }
-
-if(!isset($_SESSION['tarjeta1'])){
-    $_SESSION['tarjeta1'] = "";
-}
-if(!isset($_SESSION['tarjeta2'])){
-    $_SESSION['tarjeta2'] = "";
-}
-
 
 
 if (isset($_POST['pulsarTarjeta'])) {
-    if($_SESSION['tarjeta1'] === ""){
+    if ($_SESSION['tarjeta1'] === "") {
         $_SESSION['arrayTarjetas'][$_POST['pulsarTarjeta']][1] = "pulsada";
-        $_SESSION['tarjeta1'] = $_SESSION['arrayTarjetas'][$_POST['pulsarTarjeta']][0];
-    }elseif($_SESSION['tarjeta2'] === ""){
+        array_push($_SESSION['tarjeta1'],$_SESSION['arrayTarjetas'][$_POST['pulsarTarjeta']][0]);
+        array_push($_SESSION['tarjeta1'][1],$_POST['pulsarTarjeta']);
+    } elseif ($_SESSION['tarjeta2'] === "") {
         $_SESSION['arrayTarjetas'][$_POST['pulsarTarjeta']][1] = "pulsada";
-        $_SESSION['tarjeta2'] = $_SESSION['arrayTarjetas'][$_POST['pulsarTarjeta']][0];
+        array_push($_SESSION['tarjeta2'],$_SESSION['arrayTarjetas'][$_POST['pulsarTarjeta']][0]);
+        array_push($_SESSION['tarjeta2'][1],$_POST['pulsarTarjeta']);
+    
+
+        if (comprobarTarjetas($_SESSION['arrayTarjetas'], $_SESSION['tarjeta1'], $_SESSION['tarjeta2'])) {
+            $_SESSION['tarjeta1'] = "";
+            $_SESSION['tarjeta2'] = "";
+            $_SESSION['tarjeta3'] = "";
+        } else {
+            $indice1 = $_SESSION['tarjeta1'][1];
+            $indice2 = $_SESSION['tarjeta2'][1];
+            
+            $_SESSION['arrayTarjetas'][$indice1][1] = "noPulsada";
+            $_SESSION['arrayTarjetas'][$indice2][1] = "noPulsada";
+            $_SESSION['tarjeta1'] = "";
+            $_SESSION['tarjeta2'] = "";
+        }
     }
-
-
 }
 
-echo "<pre>";
-var_dump($_SESSION['tarjeta1']);
-var_dump($_SESSION['tarjeta2']);
-echo "</pre>";
 
+
+
+// echo "<pre>";
+// var_dump($_SESSION['tarjeta1']);
+// var_dump($_SESSION['tarjeta2']);
+// var_dump($_SESSION['arrayTarjetas']);
+// echo "</pre>";
 ?>
 
 

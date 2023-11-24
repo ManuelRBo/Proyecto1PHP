@@ -30,3 +30,19 @@ function tarjetaNoPulsada($i){
                 &#10026;
             </button>";
 }
+
+function comprobarTarjetas($arrayTarjetas, $tarjeta1, $tarjeta2){
+    if($tarjeta1 === $tarjeta2){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+function encontrarTarjeta($arrayTarjetas, $tarjeta){
+    foreach ($arrayTarjetas as $indice => $datosTarjeta) {
+        if ($datosTarjeta[0] === $tarjeta && $datosTarjeta[1] === "pulsada") {
+            return $indice;
+        }
+    }
+}

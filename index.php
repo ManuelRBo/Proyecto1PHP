@@ -1,7 +1,15 @@
 <?php
+/**
+ * Esta pagina realiza la funcion de la pagina principal donde se encuentra el formulario donde se ingresa el numero de tarjetas para jugar
+ * @author Manuel Rodrigo Borriño
+ */
+
+    // Recuperamos la sesion y la destruimos cuando volvemos desde la pagina ganar.php
     session_start();
     session_destroy();
- $error = $_GET['error'] ?? '';
+
+    // Si hay un error en la URL nos lo guarda en la variable y sino guarda vacio
+    $error = $_GET['error'] ?? '';
  
 ?>
 
@@ -24,6 +32,8 @@
             <button>Comenzar Juego</button>
         </form>
             <?php
+
+            //En el caso de que el error sea 0 nos muestra un mensaje de error
                 if($error === '0'){
                     echo '
                     <p class="error">Rellena el campo con un número par</p>';

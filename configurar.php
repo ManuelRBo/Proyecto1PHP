@@ -15,11 +15,11 @@ if(isset($_POST['configurar'])){
     //y crearemos el nuevo array para despues volver a tarjetas.php
     if($_POST['configurar'] === "actualizar"){
         if($_POST['numeroTarjetas'] !== "" && intval($_POST['numeroTarjetas']) % 2 === 0){
-            $_SESSION['numeroTarjetas'] = $_POST['numeroTarjetas'];
+            $_SESSION['numeroTarjetas'] = intval($_POST['numeroTarjetas'])*2;
             $_SESSION['tarjeta1'] = "";
             $_SESSION['tarjeta2'] = "";
             $_SESSION['numeroJugadas'] = 0;
-            $_SESSION['arrayTarjetas'] = crearArrayTarjetas($_POST['numeroTarjetas']);
+            $_SESSION['arrayTarjetas'] = crearArrayTarjetas($_SESSION['numeroTarjetas']);
             header('Location: tarjetas.php');
             //Si esta vacio o es impar la variable error sera cero
         }else{
@@ -48,7 +48,7 @@ if(isset($_POST['configurar'])){
         <form action="configurar.php" method="post">
             <div class="entrada">
                 <input type="number" name="numeroTarjetas" id="numeroTarjetas">
-                <label for="numeroTarjetas">Número de tarjetas</label>
+                <label for="numeroTarjetas">Número de dibujos</label>
             </div>
             <button name="configurar" value="actualizar">Actualizar</button>
             <button name="configurar" value="reiniciar">Reiniciar</button>

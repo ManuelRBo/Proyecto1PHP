@@ -1,10 +1,11 @@
 <?php
+
 /**
  * Esta pagina maneja el funcionamiento principal del juego, pinchar tarjetas, mostrarlas, redirigirnos en caso de error, etc.
  * @author Manuel Rodrigo Borriño
  */
 
- 
+
 //Incluimos el archivo funciones.php e iniciamos una sesion
 include 'funciones.php';
 session_start();
@@ -56,41 +57,43 @@ if (isset($_POST['header'])) {
     $_SESSION['numeroJugadas'] = 0;
 }
 
-
 //Esta comprobacion se realizara cada vez que se pulse una tarjeta
 if (isset($_POST['pulsarTarjeta'])) {
-    //Si hemos pulsado una tarjeta, guardaremos la primera tarjeta pulsada en la variable de sesion, la marcaremos como pulsada y guadaremos su posicion
-    if ($_SESSION['tarjeta1'] === "") {
-        $_SESSION['arrayTarjetas'][$_POST['pulsarTarjeta']][1] = "pulsada";
-        $_SESSION['tarjeta1'] = $_POST['pulsarTarjeta'];
-
-        //Se haria lo mismo que con la segunda tarjeta pulsada, y en este caso sumaremos 1 al numero de jugadas
-    } elseif ($_SESSION['tarjeta2'] === "") {
-        $_SESSION['numeroJugadas'] += 1;
-        $_SESSION['arrayTarjetas'][$_POST['pulsarTarjeta']][1] = "pulsada";
-        $_SESSION['tarjeta2'] = $_POST['pulsarTarjeta'];
-
-        //Cada vez que pulsemos la segunda tarjeta comprobaremos si se ha ganado, en caso de que todas esten pulsadas redirigiremos a ganar.php
-        if (ganar($_SESSION['arrayTarjetas'])) {
-            header('Location: ganar.php');
-        }
-
-        //En caso de que las variables de tarjeta 1 y 2 esten comprobaremos que ambas sean iguales al pulsar una tercera tarjeta
-    } else {
-
-        //Si son iguales pondremos guardaremos la tercera tarjeta en tarjeta 1 y se marcara como pulsada y reiniciamos tarjeta 2
-        if (comprobarTarjetas($_SESSION['arrayTarjetas'], $_SESSION['tarjeta1'], $_SESSION['tarjeta2'])) {
+    if ($_SESSION['arrayTarjetas'][$_POST['pulsarTarjeta']][1] !== "pulsada") {
+        $_SESSION['cartaAnterior'] = $_POST['pulsarTarjeta'];
+        //Si hemos pulsado una tarjeta, guardaremos la primera tarjeta pulsada en la variable de sesion, la marcaremos como pulsada y guadaremos su posicion
+        if ($_SESSION['tarjeta1'] === "") {
             $_SESSION['arrayTarjetas'][$_POST['pulsarTarjeta']][1] = "pulsada";
             $_SESSION['tarjeta1'] = $_POST['pulsarTarjeta'];
-            $_SESSION['tarjeta2'] = "";
 
-            //Si no son iguales pondremos ambas tarjetas en no pulsada y pondremos la terera tarjeta en la tarjeta 1 y como pulsada y reiniciamos la tarjeta 2
+            //Se haria lo mismo que con la segunda tarjeta pulsada, y en este caso sumaremos 1 al numero de jugadas
+        } elseif ($_SESSION['tarjeta2'] === "") {
+            $_SESSION['arrayTarjetas'][$_POST['pulsarTarjeta']][1] = "pulsada";
+            $_SESSION['tarjeta2'] = $_POST['pulsarTarjeta'];
+            $_SESSION['numeroJugadas'] += 1;
+
+            //Cada vez que pulsemos la segunda tarjeta comprobaremos si se ha ganado, en caso de que todas esten pulsadas redirigiremos a ganar.php
+            if (ganar($_SESSION['arrayTarjetas'])) {
+                header('Location: ganar.php');
+            }
+
+            //En caso de que las variables de tarjeta 1 y 2 esten comprobaremos que ambas sean iguales al pulsar una tercera tarjeta
         } else {
-            $_SESSION['arrayTarjetas'][$_SESSION['tarjeta1']][1] = "noPulsada";
-            $_SESSION['arrayTarjetas'][$_SESSION['tarjeta2']][1] = "noPulsada";
-            $_SESSION['arrayTarjetas'][$_POST['pulsarTarjeta']][1] = "pulsada";
-            $_SESSION['tarjeta1'] = $_POST['pulsarTarjeta'];
-            $_SESSION['tarjeta2'] = "";
+
+            //Si son iguales pondremos guardaremos la tercera tarjeta en tarjeta 1 y se marcara como pulsada y reiniciamos tarjeta 2
+            if (comprobarTarjetas($_SESSION['arrayTarjetas'], $_SESSION['tarjeta1'], $_SESSION['tarjeta2'])) {
+                $_SESSION['arrayTarjetas'][$_POST['pulsarTarjeta']][1] = "pulsada";
+                $_SESSION['tarjeta1'] = $_POST['pulsarTarjeta'];
+                $_SESSION['tarjeta2'] = "";
+
+                //Si no son iguales pondremos ambas tarjetas en no pulsada y pondremos la terera tarjeta en la tarjeta 1 y como pulsada y reiniciamos la tarjeta 2
+            } else {
+                $_SESSION['arrayTarjetas'][$_SESSION['tarjeta1']][1] = "noPulsada";
+                $_SESSION['arrayTarjetas'][$_SESSION['tarjeta2']][1] = "noPulsada";
+                $_SESSION['arrayTarjetas'][$_POST['pulsarTarjeta']][1] = "pulsada";
+                $_SESSION['tarjeta1'] = $_POST['pulsarTarjeta'];
+                $_SESSION['tarjeta2'] = "";
+            }
         }
     }
 }

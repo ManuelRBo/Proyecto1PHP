@@ -13,9 +13,9 @@ session_start();
 //Comprobamos que exista el numero de tarjetas en POST
 if (isset($_POST['numeroTarjetas'])) {
     //Si existe, comprbamos que no este vacio y que no sea impar ya que al ser aprejas tienen que ser tarjetas pares
-    if ($_POST['numeroTarjetas'] !== "" && intval($_POST['numeroTarjetas']) % 2 === 0 && intval($_POST['numeroTarjetas']) > 1 && intval($_POST['numeroTarjetas']) < 62) {
+    if ($_POST['numeroTarjetas'] !== "" && intval($_POST['numeroTarjetas']) > 1 && intval($_POST['numeroTarjetas']) < 62) {
         //Lo añadimos a la sesion si es correcta la comprobacion
-        $_SESSION['numeroTarjetas'] = $_POST['numeroTarjetas'];
+        $_SESSION['numeroTarjetas'] = (int)$_POST['numeroTarjetas'] * 2;
     } else {
         //Si no destruimos la sesion y redirigimos a index.php con el mensaje de error en la URL
         session_destroy();

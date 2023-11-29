@@ -27,7 +27,7 @@
         <form action="tarjetas.php" method="post">
             <div class="entrada">
                 <input type="number" name="numeroTarjetas" id="numeroTarjetas">
-                <label for="numeroTarjetas">Número de tarjetas</label>
+                <label for="numeroTarjetas">Número de dibujos</label>
             </div>
             <button>Comenzar Juego</button>
         </form>
@@ -36,7 +36,7 @@
             //En el caso de que el error sea 0 nos muestra un mensaje de error
                 if($error === '0'){
                     echo '
-                    <p class="error">Rellena el campo con un número par entre 2 y 61</p>';
+                    <p class="error">Rellena el campo con un número entre 2 y 61</p>';
                 }
             ?>
     </div>

@@ -14,7 +14,7 @@ if(isset($_POST['configurar'])){
     //En caso de que pulsemos en actualizar, comprobaremos que no este vacio ni sea impar, entonces actualizaremos la variable de sesion
     //y crearemos el nuevo array para despues volver a tarjetas.php
     if($_POST['configurar'] === "actualizar"){
-        if($_POST['numeroTarjetas'] !== "" && intval($_POST['numeroTarjetas']) % 2 === 0){
+        if($_POST['numeroTarjetas'] !== "" && intval($_POST['numeroTarjetas']) > 1 && intval($_POST['numeroTarjetas']) < 62){
             $_SESSION['numeroTarjetas'] = intval($_POST['numeroTarjetas'])*2;
             $_SESSION['tarjeta1'] = "";
             $_SESSION['tarjeta2'] = "";
